@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriAI - Personalized Diet Plan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #2ecc71;
+            --dark-green: #27ae60;
+            --light-green: #e8f5e9;
+            --text-color: #333;
+            --background-color: #f4f6f7;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            padding: 5%;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: rgba(255, 255, 255, 0.839);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: black;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: black;
+            font-size: large;
+            margin-left: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-green);
+        }
+
+        /* Page Container */
+        .plan-container {
+            max-width: 900px;
+            margin: 50px auto 50px;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            color: var(--dark-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+        }
+
+        /* Form Styles */
+        .diet-form {
+            display: grid;
+            gap: 1.5rem;
+
+        }
+
+        .form-section {
+            background-color: var(--light-green);
+            padding: 1.5rem;
+            margin: 5%;
+            border-radius: 10px;
+        }
+
+        .form-section h2 {
+            color: var(--dark-green);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-green);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .radio-group label,
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .multi-select {
+            height: 150px;
+            overflow-y: auto;
+        }
+
+
+        /* Result Styles */
+        #result-section {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .diet-plan {
+            background-color: var(--light-green);
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
+        .result-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .result-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .disclaimer {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+        }
+
+        /* Tooltip Styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted #666;
+            cursor: help;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Result Styles */
+        #result-section {
+            margin-top: 2rem;
+        }
+
+        .diet-plan {
+            background-color: var(--light-green);
+            padding: 2rem;
+            border-radius: 10px;
+            line-height: 1.8;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .diet-plan ul {
+            margin-left: 1.5rem;
+            list-style: disc;
+        }
+
+        .diet-plan p {
+            margin-bottom: 1rem;
+        }
+
+        .stickyButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            font-size: 16px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .stickyButton:hover {
+            background-color: #0056b3;
+        }
+
+        /* Popup window */
+        .popup {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+            margin-top: 2rem;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: black;
+        }
+
+        /* Chatbox styling */
+        .chatbox {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .chatbox p {
+            margin: 0;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .user-message {
+            background-color: #d1e7ff;
+            color: #0056b3;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .bot-message {
+            background-color: #e9ffeb;
+            color: #28a745;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        /* Input field and button styling */
+        .chat-input {
+            width: calc(100% - 80px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Style for "Generate Diet Plan" button */
+        #diet-form button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #diet-form button[type="submit"]:hover {
+            background-color: var(--dark-green);
+        }
+
+        /* Style for "Send" button in the AI assistant */
+        #generate-btn { 
+            width: 70px;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #generate-btn:hover {
+            background-color: #218838; 
+        }
+
+
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Loader styling for when the bot is processing */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+            margin-top: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+ 
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="l1.svg" alt="Build Resume Logo" height="50px">
+            <h1>Smart Bite.</h1>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="faq.html">FAQ</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div class="plan-container">
+        <div class="page-header">
+            <h1>Create Your Personalized Diet Plan</h1>
+            <p>Provide your details to craft a diet plan tailored to your needs!</p>
+        </div>
+
+        <form id="diet-form">
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <h2>Basic Information</h2>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" required min="12" max="120" placeholder="Enter your age">
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="gender" value="male" required> Male</label>
+                        <label><input type="radio" name="gender" value="female"> Female</label>
+                        <label><input type="radio" name="gender" value="other"> Other</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="height">Height</label>
+                    <input type="number" id="height" name="height" required placeholder="Enter height">
+                    <div class="radio-group">
+                        <label><input type="radio" name="height-unit" value="cm" checked> cm</label>
+                        <label><input type="radio" name="height-unit" value="ft"> feet</label>
+                    </div>
+                </div>                
+                <div class="form-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" name="weight" required placeholder="Enter weight">
+                </div>
+            </div>
+
+            <!-- Dietary Preferences Section -->
+            <div class="form-section">
+                <h2>Dietary Preferences</h2>
+                <div class="form-group">
+                    <label>Diet Type</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="diet-type" value="vegetarian" required> Vegetarian</label>
+                        <label><input type="radio" name="diet-type" value="eggitarian"> Eggitarian</label>
+                        <label><input type="radio" name="diet-type" value="non-vegetarian"> Non-Vegetarian</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="meals">Meals Per Day</label>
+                    <input type="number" id="meals" name="meals" required min="1" max="6" value="3">
+                </div>
+            </div>
+
+            <!-- Health Conditions Section -->
+            <div class="form-section">
+                <h2>Health and Allergies</h2>
+                <div class="form-group">
+                    <label for="allergies">Allergies (Optional)</label>
+                    <input type="text" id="allergies" name="allergies" placeholder="e.g., Nuts, Gluten">
+                </div>
+                <div class="form-group">
+                    <label for="conditions">Health Conditions (Optional)</label>
+                    <input type="text" id="conditions" name="conditions" placeholder="e.g., Diabetes, Hypertension">
+                </div>
+            </div>
+
+            <!-- Lifestyle Section -->
+            <div class="form-section">
+                <h2>Lifestyle</h2>
+                <div class="form-group">
+                    <label for="activity-level">Activity Level</label>
+                    <select id="activity-level" name="activity-level" required>
+                        <option value="sedentary">Sedentary</option>
+                        <option value="lightly-active">Lightly Active</option>
+                        <option value="moderately-active">Moderately Active</option>
+                        <option value="very-active">Very Active</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="budget">Budget (Optional)</label>
+                    <input type="number" id="budget" name="budget" placeholder="Enter your budget in Rupee">
+                </div>
+            </div>
+
+            <button type="submit">Generate Diet Plan
+                <div class="loader" style="display: none;"></div></button>
+        </form>
+
+        <!-- Result Section -->
+        <div id="result-section" style="display: none;">
+            <h2>Your Personalized Diet Plan</h2>
+            <div id="diet-plan-container" class="diet-plan"></div>
+        </div>
+
+    </div>
+
+    <!-- Floating button to open assistant -->
+    <button id="openPopupBtn" class="stickyButton">Open Assistant</button>
+
+    <!-- Assistant Popup -->
+    <div id="popupCard" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" id="closePopupBtn">&times;</span>
+            <h2>Assistant</h2>
+            <div id="chatbox" class="chatbox"></div>
+            <div class="input-container">
+                <input type="text" id="user-input" class="chat-input" placeholder="Ask your question..." required>
+                <button id="generate-btn" class="generate-btn">send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const popup = document.getElementById("popupCard");
+        const openPopupBtn = document.getElementById("openPopupBtn");
+        const closePopupBtn = document.getElementById("closePopupBtn");
+
+        // When the user clicks the button, open the pop-up
+        openPopupBtn.onclick = function () {
+            popup.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the pop-up
+        closePopupBtn.onclick = function () {
+            popup.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the pop-up, close it
+        window.onclick = function (event) {
+            if (event.target === popup) {
+                popup.style.display = "none";
+            }
+        }
+
+        // Handle the generate button click
+        document.getElementById('generate-btn').addEventListener('click', async function () {
+            const userInput = document.getElementById('user-input').value;
+
+            if (!userInput) {
+                alert("Please enter a question.");
+                return;
+            }
+
+            // Display user input in the chatbox (above the bot's response)
+            const chatbox = document.getElementById('chatbox');
+
+            // User's message
+            const userMessage = document.createElement('p');
+            userMessage.classList.add('user-message');
+            userMessage.textContent = `You: ${userInput}`;
+            chatbox.appendChild(userMessage);
+
+            // Add the loader while waiting for the bot response
+            const loader = document.createElement('div');
+            loader.classList.add('loader');
+            chatbox.appendChild(loader);
+            chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+
+            // API call to Gemini
+            try {
+                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=api_key', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [
+                            {
+                                parts: [
+                                    {
+                                        text: userInput,
+                                    },
+                                ],
+                            },
+                        ],
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                // Process and display result
+                // After receiving the bot response
+                const content = result.candidates[0].content.parts[0].text;
+
+                // Remove loader
+                chatbox.removeChild(loader);
+
+                // Bot's message with HTML formatting applied
+                const botMessage = document.createElement('p');
+                botMessage.classList.add('bot-message');
+                botMessage.innerHTML = content
+                    .replace(/## /g, "") // Replace markdown headers with HTML headers
+                    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                    .replace(/\n\n/g, "<p></p>") // Replace markdown line breaks with HTML paragraphs
+                    .replace(/\* /g, "<li>") // Replace markdown bullet points with HTML list items
+                    .replace(/\n/g, ""); // Remove extra newlines
+
+                chatbox.appendChild(botMessage);
+                chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+
+                chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+            } catch (error) {
+                alert(`Failed to fetch response: ${error.message}`);
+                console.error(error);
+            }
+        });
+
+        document.getElementById('diet-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // Collect Data
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            // Show loader
+            const loader = e.target.querySelector('.loader');
+            loader.style.display = 'inline-block'; 
+
+            // Hide the result section while loading
+            document.getElementById('result-section').style.display = 'none';
+
+           
+
+            // Create the query string for the API
+            const text = `Generate a personalized indian diet for a ${data.age}-year-old ${data.gender} who is ${data['activity-level']}, weighs ${data.weight} kg, and is ${data.height} ${data['height-unit']}. 
+                  Include dietary preferences: ${data['diet-type']} diet. 
+                  Optional considerations: allergies (${data.allergies}), health conditions (${data.conditions}), and budget (${data.budget || "not specified"}).`;
+
+            
+            // API call
+            try {
+                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=api_key', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [
+                            {
+                                parts: [
+                                    {
+                                        text: text,
+                                    },
+                                ],
+                            },
+                        ],
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} ${response.statusText}`);
+                }
+
+                const result = await response.json();
+
+                // Process and Display Result
+                const content = result.candidates[0].content.parts[0].text;
+                const dietPlanContainer = document.getElementById('diet-plan-container');
+
+                dietPlanContainer.innerHTML = content
+                    .replace(/## /g, "") // Replace markdown headers with HTML headers
+                    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                    .replace(/\n\n/g, "<p></p>") // Replace markdown line breaks with HTML paragraphs
+                    .replace(/\* /g, "<li>") // Replace markdown bullet points with HTML list items
+                    .replace(/\n/g, ""); // Remove extra newlines
+
+                // Hide the loader
+                loader.style.display = 'none';
+
+                // Show the result section
+                document.getElementById('result-section').style.display = 'block';
+            } catch (error) {
+                alert(`Failed to fetch diet plan: ${error.message}`);
+                console.error(error);
+            }
+        });
+
+        
+    
+    </script>
+</body>
+
+</html>
