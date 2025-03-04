@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriAI - Personalized Diet Plan</title>
+    <link rel="stylesheet" href="css/plan.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="/SmartBite/images/l1.svg" alt="Build Resume Logo" height="50px">
+            <h1>Smart Bite.</h1>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="faq.html">FAQ</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div class="plan-container">
+        <div class="page-header">
+            <h1>Create Your Personalized Diet Plan</h1>
+            <p>Provide your details to craft a diet plan tailored to your needs!</p>
+        </div>
+
+        <form id="diet-form">
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <h2>Basic Information</h2>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" required min="12" max="120" placeholder="Enter your age">
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="gender" value="male" required> Male</label>
+                        <label><input type="radio" name="gender" value="female"> Female</label>
+                        <label><input type="radio" name="gender" value="other"> Other</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="height">Height</label>
+                    <input type="number" id="height" name="height" required placeholder="Enter height">
+                    <div class="radio-group">
+                        <label><input type="radio" name="height-unit" value="cm" checked> cm</label>
+                        <label><input type="radio" name="height-unit" value="ft"> feet</label>
+                    </div>
+                </div>                
+                <div class="form-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" name="weight" required placeholder="Enter weight">
+                </div>
+            </div>
+
+            <!-- Dietary Preferences Section -->
+            <div class="form-section">
+                <h2>Dietary Preferences</h2>
+                <div class="form-group">
+                    <label>Diet Type</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="diet-type" value="vegetarian" required> Vegetarian</label>
+                        <label><input type="radio" name="diet-type" value="eggitarian"> Eggitarian</label>
+                        <label><input type="radio" name="diet-type" value="non-vegetarian"> Non-Vegetarian</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="meals">Meals Per Day</label>
+                    <input type="number" id="meals" name="meals" required min="1" max="6" value="3">
+                </div>
+            </div>
+
+            <!-- Health Conditions Section -->
+            <div class="form-section">
+                <h2>Health and Allergies</h2>
+                <div class="form-group">
+                    <label for="allergies">Allergies (Optional)</label>
+                    <input type="text" id="allergies" name="allergies" placeholder="e.g., Nuts, Gluten">
+                </div>
+                <div class="form-group">
+                    <label for="conditions">Health Conditions (Optional)</label>
+                    <input type="text" id="conditions" name="conditions" placeholder="e.g., Diabetes, Hypertension">
+                </div>
+            </div>
+
+            <!-- Lifestyle Section -->
+            <div class="form-section">
+                <h2>Lifestyle</h2>
+                <div class="form-group">
+                    <label for="activity-level">Activity Level</label>
+                    <select id="activity-level" name="activity-level" required>
+                        <option value="sedentary">Sedentary</option>
+                        <option value="lightly-active">Lightly Active</option>
+                        <option value="moderately-active">Moderately Active</option>
+                        <option value="very-active">Very Active</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="budget">Budget (Optional)</label>
+                    <input type="number" id="budget" name="budget" placeholder="Enter your budget in Rupee">
+                </div>
+            </div>
+
+            <button type="submit">Generate Diet Plan
+                <div class="loader" style="display: none;"></div></button>
+        </form>
+
+        <!-- Result Section -->
+        <div id="result-section" style="display: none;">
+            <h2>Your Personalized Diet Plan</h2>
+            <div id="diet-plan-container" class="diet-plan"></div>
+        </div>
+
+    </div>
+
+    <!-- Floating button to open assistant -->
+    <button id="openPopupBtn" class="stickyButton">Open Assistant</button>
+
+    <!-- Assistant Popup -->
+    <div id="popupCard" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" id="closePopupBtn">&times;</span>
+            <h2>Assistant</h2>
+            <div id="chatbox" class="chatbox"></div>
+            <div class="input-container">
+                <input type="text" id="user-input" class="chat-input" placeholder="Ask your question..." required>
+                <button id="generate-btn" class="generate-btn">send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/plan.js"></script>
+    <script src="js/assistant.js"></script> 
+</body>
+</html>
