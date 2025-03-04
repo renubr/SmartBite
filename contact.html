@@ -5,173 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
-    <style>
-        :root {
-            --primary-green: #2ecc71;
-            --dark-green: #27ae60;
-            --light-green: #2ecc7114;
-            --text-color: black;
-            --background-color: #f4f6f7;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #EFF2F9;
-        }
-
-        header {
-            background-color: var(--background-color);
-            font-size: large;
-            padding: 1rem 0;
-            box-shadow: #4d5c7e;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            color: #000000;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0rem 1rem;
-
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo img {
-            width: 50px;
-            margin-right: 1rem;
-        }
-
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        nav li {
-            margin-left: 1rem;
-        }
-
-        nav li a:hover {
-            color: var(--primary-green);
-        }
-
-        nav a {
-            color: #000000;
-            text-decoration: none;
-        }
-
-        .btn {
-            background-color: var(--primary-green);
-            color: rgb(0, 0, 0);
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-style: italic;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: var(--dark-green);
-            color: rgb(255, 255, 255);
-        }
-
-        .faq {
-            padding: 3rem 0.5rem;
-        }
-
-        .form-group {
-            margin: 1.5rem 0;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #333;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem 0;
-            text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            nav ul {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            nav li {
-                margin-bottom: 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/contact.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
     </script>
-    <script type="text/javascript">
-        (function () {
-            emailjs.init({
-                publicKey: "public_key",
-            });
-        })();
-
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('contact-form').addEventListener('submit', function (event) {
-                event.preventDefault(); // Prevent form submission
-
-                // Collect form data
-                let name = document.getElementById('name').value;
-                let email = document.getElementById('email').value;
-                let message = document.getElementById('message').value;
-
-                // Define the template parameters
-                let templateParams = {
-                    from_name: name,
-                    from_email: email,
-                    message: message
-                };
-
-                // Send the email using EmailJS
-                emailjs.send('service_key', 'template_key', templateParams)
-                    .then(function (response) {
-                        console.log('SUCCESS!', response.status, response.text);
-                        alert('Thank you for contacting us!');
-                        // Reset the form
-                        document.getElementById('contact-form').reset();
-                    }, function (error) {
-                        console.log('FAILED...', error);
-                        alert('Sorry, there was an error sending your message. Please try again later.');
-                    });
-            });
-        });
-    </script>
+    <script src="js/contact.js"></script>
 </head>
 
 <body>
@@ -179,7 +16,7 @@
         <div class="container">
             <nav>
                 <div class="logo">
-                    <img src="l1.svg" alt="Logo">
+                    <img src="/SmartBite/images/l1.svg" alt="Logo">
                     <h1>Smart Bite.</h1>
                 </div>
                 <ul>
