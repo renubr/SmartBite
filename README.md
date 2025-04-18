@@ -4,7 +4,7 @@
 Smart Bite is a comprehensive web application designed to provide personalized nutrition guidance and diet planning. The platform leverages AI technology to create customized meal plans based on individual health profiles, dietary preferences, and fitness goals.
 
 ## 🌍 Live Demo
-You can view the live version of the project at DevGround.
+You can view the live version of the project at [SmartBite](https://ravi-s7.github.io/SmartBite/).
 
 ## ✨ Features
 
