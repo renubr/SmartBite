@@ -22,7 +22,7 @@ document.getElementById('diet-form').addEventListener('submit', async function (
 
     // API call
     try {
-        const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=api_key', {
+        const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCVMhcF_hLfqkNPzbdg4DqrsXsVTMaN07Y', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

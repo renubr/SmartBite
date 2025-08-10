@@ -1,6 +1,6 @@
 (function () {
     emailjs.init({
-        publicKey: "public_key",
+        publicKey: "MpHG863r3Si9GE0JS",
     });
 })();
 
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         // Send the email using EmailJS
-        emailjs.send('service_key', 'template_key', templateParams)
+        emailjs.send('service_23bedfa', 'template_8l4oy7p', templateParams)
             .then(function (response) {
                 console.log('SUCCESS!', response.status, response.text);
                 alert('Thank you for contacting us!');
